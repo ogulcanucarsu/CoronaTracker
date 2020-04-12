@@ -3,7 +3,7 @@
     package="org.ucarsu.coronaexample.app.presentation">
 
     <application>
-        <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".activity.BaseActivity"></activity>
     </application>
 
 </manifest>

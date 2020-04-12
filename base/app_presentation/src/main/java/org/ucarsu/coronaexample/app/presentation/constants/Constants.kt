@@ -1,4 +1,4 @@
-package org.ucarsu.coronaexample.app.presentation
+package org.ucarsu.coronaexample.app.presentation.constants
 
 /*
  * Core Presentation Ui Constants

@@ -1,4 +1,4 @@
-package org.ucarsu.coronaexample.app.presentation
+package org.ucarsu.coronaexample.app.presentation.navigation
 
 /*
  * Defines navigation logic of a screen
