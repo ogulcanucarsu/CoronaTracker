@@ -2,7 +2,7 @@ package error
 
 import javax.inject.Inject
 
-class DefaultErrorFactory @Inject constructor() : ErrorFactory {
+class DefaultErrorFactory @Inject constructor(): ErrorFactory {
 
     override fun createApiError(code: String, messages: String) =
         Error.ApiError(code, messages)
