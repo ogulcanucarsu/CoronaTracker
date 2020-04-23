@@ -18,4 +18,6 @@ dependencies {
     testImplementation TestLibraries.jUnit
     androidTestImplementation TestLibraries.jUnitExt
     androidTestImplementation TestLibraries.espresso
+
+    implementation project(Modules.core)
 }
