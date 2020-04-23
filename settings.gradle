@@ -2,6 +2,3 @@ rootProject.name='CoronaExample'
 // APP
 include Modules.app
 include Modules.core
-include Modules.appCore
-include Modules.appDomain
-include Modules.appPresentation

@@ -12,9 +12,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
-            <option value="$PROJECT_DIR$/base/app_core" />
-            <option value="$PROJECT_DIR$/base/app_domain" />
-            <option value="$PROJECT_DIR$/base/app_presentation" />
             <option value="$PROJECT_DIR$/base/core" />
             <option value="$PROJECT_DIR$/buildSrc" />
           </set>

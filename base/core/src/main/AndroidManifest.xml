@@ -1,2 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.ucarsu.coronaexample.core" />
+    package="org.ucarsu.coronaexample.core">
+
+    <application>
+        <activity android:name="presentation.activity.BaseActivity"></activity>
+    </application>
+
+</manifest>
