@@ -1,19 +1,36 @@
 package presentation.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
-import androidx.annotation.MenuRes
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import dagger.android.support.AndroidSupportInjection
+import navigation.navigations.DefaultNavigationController
+import navigation.navigations.NavigationController
 import presentation.activity.BaseActivity
 import presentation.base.BaseUi
 import presentation.constants.Constants
 import navigation.navigations.UiNavigation
+import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-abstract class BaseFragment : Fragment(), BaseUi {
+abstract class BaseFragment<VM : ViewModel> : Fragment(), BaseUi {
+
+    @Inject
+    protected lateinit var vmFactory: ViewModelProvider.Factory
+
+    protected lateinit var viewModel: VM
+
+    private lateinit var navigationController: NavigationController
+
+    abstract fun getModelClass(): Class<VM>
+
+
     @LayoutRes
     protected abstract fun getLayoutRes(): Int
 
@@ -31,6 +48,19 @@ abstract class BaseFragment : Fragment(), BaseUi {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(menuRes != Constants.NO_RES)
+        this.navigationController = DefaultNavigationController(WeakReference(activity!!))
+        viewModel = ViewModelProviders.of(this, vmFactory).get(getModelClass())
+    }
+
+    @CallSuper
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        onInject()
+        super.onAttach(context)
+    }
+
+    open fun onInject() {
+        // empty for override
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,7 +115,7 @@ abstract class BaseFragment : Fragment(), BaseUi {
 
     private fun initToolBar() {
         if (toolbarId == Constants.NO_RES) return
-        view?.findViewById<Toolbar>(toolbarId)?.let { toolbar->
+        view?.findViewById<Toolbar>(toolbarId)?.let { toolbar ->
             if (activity is BaseActivity) {
                 (activity as BaseActivity).setToolbar(toolbar)
             }

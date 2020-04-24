@@ -14,4 +14,6 @@ dependencies {
     api Libraries.logInterceptor
     api Libraries.okHttp
     api Libraries.retrofitCoroutineAdapter
+
+    api Libraries.lifecycleExtensions
 }
