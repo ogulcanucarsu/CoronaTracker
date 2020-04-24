@@ -1,5 +1,6 @@
 package presentation.activity
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,88 +8,45 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.*
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import org.ucarsu.coronaexample.core.R
 import presentation.constants.Constants
-import presentation.extension.isValidResource
-import presentation.extension.transact
-import presentation.navigation.DefaultNavigationController
-import presentation.navigation.NavigationController
-import presentation.navigation.UiNavigation
-import java.lang.ref.WeakReference
+import navigation.navigations.UiNavigation
 
-class BaseActivity : AppCompatActivity() {
-
-    @StringRes
-    open val titleRes =
-        R.string.app_name
-
-    @MenuRes
-    open val menuRes =
-        Constants.NO_RES
-
-    @IdRes
-    open val toolbarRes =
-        Constants.NO_RES
-
-    open val uiNavigation =
-        UiNavigation.BACK
-
-    @IdRes
-    open val containerId =
-        R.id.frameLayoutMain
+abstract class BaseActivity : AppCompatActivity() {
 
     @LayoutRes
-    open val layoutRes =
-        R.layout.activity_base
+    abstract fun getLayoutRes(): Int
 
-    protected lateinit var navigationController: NavigationController
+    @StringRes
+    open val titleRes = R.string.app_name
 
-    open fun provideInitialFragment(): Fragment? = null
+    @MenuRes
+    open val menuRes = Constants.NO_RES
+
+    open val uiNavigation = UiNavigation.BACK
+
+    @IdRes
+    open val toolbarRes = Constants.NO_RES
+
+    @IdRes
+    open val toolbarId = Constants.NO_RES
+
+    open val shouldOnBackPressedWork = true
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        navigationController =
-            DefaultNavigationController(
-                WeakReference(this)
-            )
-
-        if (layoutRes != Constants.NO_RES) {
-            setContentView(layoutRes)
-        }
-
-        if (toolbarRes.isValidResource()) {
+        setContentView(getLayoutRes())
+        if (toolbarRes != Constants.NO_RES) {
             setToolbar(findViewById(toolbarRes))
         }
         initNavigation(uiNavigation)
         setScreenTitle(getString(titleRes))
-
-        provideInitialFragment()?.let {
-            if (savedInstanceState == null) {
-                supportFragmentManager.transact {
-                    replace(containerId, it)
-                }
-            }
-        }
-        initActivity(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+        initToolBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (menuRes.isValidResource()) {
+        if (menuRes != Constants.NO_RES) {
             menuInflater.inflate(menuRes, menu)
             return true
         }
@@ -102,22 +60,6 @@ class BaseActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            REQUEST_NETWORK_PERMISSIONS -> {
-                // no-op
-            }
-        }
-    }
-
-    open fun initActivity(savedInstanceState: Bundle?) {
-        // can be overridden to init an activity
-    }
-
     fun setScreenTitle(@StringRes titleRes: Int) {
         var title: String? = null
         try {
@@ -128,37 +70,35 @@ class BaseActivity : AppCompatActivity() {
         setScreenTitle(title)
     }
 
-    fun setScreenTitle(title: String?) {
-        supportActionBar?.title = title
-    }
-
-    fun setToolbar(toolbar: Toolbar?) {
+    fun setToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
     }
 
-    fun setNavigation(uiNavigation: UiNavigation) {
-        initNavigation(uiNavigation)
-    }
-
-    private fun initNavigation(uiNavigation: UiNavigation) {
+    @SuppressLint("RestrictedApi")
+    fun initNavigation(uiNavigation: UiNavigation) {
         when (uiNavigation) {
-            UiNavigation.BACK -> {
-                supportActionBar?.apply {
-                    setDisplayShowHomeEnabled(true)
-                }
-            }
-            UiNavigation.ROOT -> {
-                supportActionBar?.apply {
-                    setDisplayShowHomeEnabled(false)
-                }
-            }
-            UiNavigation.NONE -> {
-                // no-op
+            UiNavigation.BACK -> supportActionBar?.setDefaultDisplayHomeAsUpEnabled(true)
+            UiNavigation.ROOT -> supportActionBar?.setDefaultDisplayHomeAsUpEnabled(false)
+            else -> {
+                //no-op
             }
         }
     }
 
-    companion object {
-        private const val REQUEST_NETWORK_PERMISSIONS = 1000
+    fun setScreenTitle(title: String?) {
+        supportActionBar?.title = title ?: getString(R.string.app_name)
+    }
+
+    override fun onBackPressed() {
+        if (shouldOnBackPressedWork) {
+            super.onBackPressed()
+        }
+    }
+
+    private fun initToolBar() {
+        if (toolbarId == Constants.NO_RES) return
+        findViewById<Toolbar>(toolbarId)?.let {
+            setToolbar(it)
+        }
     }
 }

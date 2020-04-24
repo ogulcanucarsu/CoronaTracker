@@ -1,6 +1,6 @@
 package presentation.base
 
-import presentation.navigation.NavigationController
+import navigation.navigations.NavigationController
 
 
 interface BaseUi {

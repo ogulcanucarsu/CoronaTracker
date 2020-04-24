@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import presentation.activity.BaseActivity
 import presentation.base.BaseUi
 import presentation.constants.Constants
-import presentation.navigation.UiNavigation
+import navigation.navigations.UiNavigation
 
 abstract class BaseFragment : Fragment(), BaseUi {
     @LayoutRes
@@ -94,7 +94,7 @@ abstract class BaseFragment : Fragment(), BaseUi {
 
     private fun setupNavigation() {
         if (activity is BaseActivity) {
-            (activity as BaseActivity).setNavigation(uiNavigation)
+            (activity as BaseActivity).initNavigation(uiNavigation)
         }
     }
 }

@@ -1,4 +1,4 @@
-package presentation.navigation
+package navigation.navigations
 
 /*
  * Defines navigation logic of a screen
