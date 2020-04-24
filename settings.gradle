@@ -2,3 +2,6 @@ rootProject.name='CoronaExample'
 // APP
 include Modules.app
 include Modules.core
+include Modules.dashBoardPresentation
+include Modules.dashBoardDomain
+include Modules.dashBoardData

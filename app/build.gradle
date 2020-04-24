@@ -20,4 +20,7 @@ dependencies {
     androidTestImplementation TestLibraries.espresso
 
     implementation project(Modules.core)
+    implementation project(Modules.dashBoardData)
+    implementation project(Modules.dashBoardDomain)
+    implementation project(Modules.dashBoardPresentation)
 }
