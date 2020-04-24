@@ -22,7 +22,7 @@ class ApiModule {
     @Provides
     @Singleton
     @Named(NAME_URL)
-    fun provideBaseUrl(): String = "Api Adress"
+    fun provideBaseUrl(): String = "https://api.collectapi.com/corona/"
 
     @Provides
     @Singleton
