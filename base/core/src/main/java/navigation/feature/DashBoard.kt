@@ -5,7 +5,7 @@ import navigation.PACKAGE_NAME
 import navigation.loadIntentOrReturnNull
 
 object DashBoard : Feature<Intent> {
-    private const val DashBoard = "$PACKAGE_NAME.dashboard.presentation.DashboardActivity"
+    private const val DashBoard = "$PACKAGE_NAME.dashboard.presentation.DashBoardActivity"
 
     override val dynamicStart: Intent?
         get() = DashBoard.loadIntentOrReturnNull()

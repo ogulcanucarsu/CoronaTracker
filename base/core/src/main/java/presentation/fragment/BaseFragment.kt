@@ -1,74 +1,53 @@
 package presentation.fragment
 
-import android.content.Context
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import dagger.android.support.AndroidSupportInjection
+import data.error.ErrorFactory
 import navigation.navigations.DefaultNavigationController
 import navigation.navigations.NavigationController
 import presentation.activity.BaseActivity
 import presentation.base.BaseUi
 import presentation.constants.Constants
 import navigation.navigations.UiNavigation
+import presentation.extension.createBlockingPane
+import presentation.extension.isValidResource
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-abstract class BaseFragment<VM : ViewModel> : Fragment(), BaseUi {
-
-    @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
-
-    protected lateinit var viewModel: VM
-
-    private lateinit var navigationController: NavigationController
-
-    abstract fun getModelClass(): Class<VM>
-
-
-    @LayoutRes
-    protected abstract fun getLayoutRes(): Int
-
-    @MenuRes
-    open val menuRes = Constants.NO_RES
+abstract class BaseFragment : Fragment(), BaseUi {
 
     @StringRes
     open val titleRes = Constants.NO_RES
 
+    @MenuRes
+    open val menuRes = Constants.NO_RES
+
     @IdRes
-    open val toolbarId = Constants.NO_RES
+    open val toolbarRes = Constants.NO_RES
 
     open val uiNavigation = UiNavigation.NONE
 
+    @LayoutRes
+    protected abstract fun getLayoutRes(): Int
+
+    protected lateinit var navigationController: NavigationController
+
+    private var blockingPane: Dialog? = null
+
+    private var blockingOperationCount = 0
+
+    @Inject
+    lateinit var errorFactory: ErrorFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(menuRes != Constants.NO_RES)
-        this.navigationController = DefaultNavigationController(WeakReference(activity!!))
-        viewModel = ViewModelProviders.of(this, vmFactory).get(getModelClass())
-    }
-
-    @CallSuper
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        onInject()
-        super.onAttach(context)
-    }
-
-    open fun onInject() {
-        // empty for override
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        if (menuRes != Constants.NO_RES) {
-            menu.clear()
-            inflater.inflate(menuRes, menu)
-        }
+        setHasOptionsMenu(menuRes.isValidResource())
+        navigationController = DefaultNavigationController(WeakReference(activity!!))
     }
 
     override fun onCreateView(
@@ -76,55 +55,82 @@ abstract class BaseFragment<VM : ViewModel> : Fragment(), BaseUi {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(getLayoutRes(), null, false)
+        if (getLayoutRes() != Constants.NO_RES) {
+            return inflater.inflate(getLayoutRes(), null, false)
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        if (toolbarRes.isValidResource()) {
+            val toolbar: Toolbar = view.findViewById(toolbarRes)
+            (activity as? BaseActivity)?.setToolbar(toolbar)
+        }
+        if (uiNavigation != UiNavigation.NONE) {
+            (activity as? BaseActivity)?.setNavigation(uiNavigation)
+        }
+        if (titleRes.isValidResource()) {
+            (activity as? BaseActivity)?.setScreenTitle(titleRes)
+        }
+        initFragmentScreen()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initToolBar()
-        if (titleRes != Constants.NO_RES) {
-            setActivityTitle(getString(titleRes))
-        }
-        if (uiNavigation != UiNavigation.NONE) {
-            setupNavigation()
-        }
+        monitorData()
+        takeData()
     }
 
-    protected fun setActivityTitle(title: String) {
-        if (activity is BaseActivity) {
-            (activity as BaseActivity).setScreenTitle(title)
-        }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(menuRes, menu)
     }
 
-    fun getApplication() = activity?.application
-
-    fun getApplicationContext() = getApplication()?.applicationContext
-
-    open fun errorDialogButtonClicked() {
-        // can be overridden
+    override fun onDestroyView() {
+        blockingPane = null
+        super.onDestroyView()
     }
 
-    open fun initView() {
-        // can be overridden
+    override fun onError(e: Error) {
+        Toast.makeText(context, e.message, Toast.LENGTH_LONG)
+
     }
 
-    private fun initToolBar() {
-        if (toolbarId == Constants.NO_RES) return
-        view?.findViewById<Toolbar>(toolbarId)?.let { toolbar ->
-            if (activity is BaseActivity) {
-                (activity as BaseActivity).setToolbar(toolbar)
+    override fun showBlockingPane() {
+        if (blockingOperationCount == 0) {
+            if (blockingPane == null) {
+                blockingPane = activity?.createBlockingPane()
+            }
+
+            blockingPane?.let {
+                if (!it.isShowing) {
+                    it.show()
+                }
             }
         }
+        blockingOperationCount += 1
     }
 
-    private fun setupNavigation() {
-        if (activity is BaseActivity) {
-            (activity as BaseActivity).initNavigation(uiNavigation)
+    override fun hideBlockingPane() {
+        blockingOperationCount -= 1
+        if (blockingOperationCount == 0) {
+            blockingPane?.dismiss()
+            blockingPane = null
         }
+    }
+
+    fun getApplicationContext() = activity?.application?.applicationContext
+
+    open fun initFragmentScreen() {
+        // can be overridden
+    }
+
+    open fun monitorData() {
+        // can be overridden
+    }
+
+    open fun takeData() {
+        // can be overridden
     }
 }
