@@ -8,6 +8,10 @@ import android.view.MenuItem
 import androidx.annotation.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import navigation.navigations.DefaultNavigationController
 import navigation.navigations.NavigationController
 import org.ucarsu.coronaexample.core.R
@@ -15,9 +19,11 @@ import presentation.constants.Constants
 import navigation.navigations.UiNavigation
 import presentation.extension.isValidResource
 import presentation.extension.transact
+import presentation.viewmodel.VmFactory
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
 
     @StringRes
     open val titleRes = R.string.app_name
@@ -36,14 +42,22 @@ abstract class BaseActivity : AppCompatActivity() {
     @LayoutRes
     open val layoutRes = R.layout.activity_base
 
+    protected lateinit var navigationController: NavigationController
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    @Inject
+    lateinit var viewModelFactory: VmFactory
+
     open fun provideInitialFragment(): Fragment? = null
 
-    protected lateinit var navigationController: NavigationController
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AndroidInjection.inject(this)
         navigationController = DefaultNavigationController(WeakReference(this))
 
         if (layoutRes != Constants.NO_RES) {
@@ -83,6 +97,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun initActivity(savedInstanceState: Bundle?) {
         // can be overridden to init an activity
+    }
+
+    open fun onInject() {
+        //empty for override
     }
 
     fun setToolbar(toolbar: Toolbar?) {

@@ -20,6 +20,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             navigationController.navigateToDashBoard()
+            navigationController.finish()
         }, SPLASH_TIME_OUT)
     }
 

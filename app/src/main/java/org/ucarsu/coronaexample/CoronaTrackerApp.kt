@@ -12,9 +12,8 @@ class CoronaTrackerApp : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder()
-            .application(this)
-            .build()
+        DaggerAppComponent.factory()
+            .create(this)
             .inject(this)
     }
     override fun androidInjector() = dispatchingAndroidInjector

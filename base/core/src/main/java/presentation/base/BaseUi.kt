@@ -1,5 +1,7 @@
 package presentation.base
 
+import data.error.Error
+
 interface BaseUi {
     fun showBlockingPane()
 

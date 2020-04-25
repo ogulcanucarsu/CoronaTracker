@@ -16,36 +16,8 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 
-@Module
+@Module(includes = [CoreApiModule::class])
 class ApiModule {
-
-    @Provides
-    @Singleton
-    @Named(NAME_URL)
-    fun provideBaseUrl(): String = "https://api.collectapi.com/corona/"
-
-    @Provides
-    @Singleton
-    fun provideRequestInterceptor(): Interceptor =
-        DefaultRequestInterceptor()
-
-    @Provides
-    @Singleton
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(
-        requestInterceptor: DefaultRequestInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient =
-        with(OkHttpClient.Builder()) {
-            addInterceptor(requestInterceptor)
-            if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor)
-            connectTimeout(ApiConstants.TIMEOUT_IN_MILIS, TimeUnit.MILLISECONDS)
-            build()
-        }
 
     @Provides
     @Singleton
@@ -59,6 +31,6 @@ class ApiModule {
         }
 
     companion object {
-        private const val NAME_URL = "url"
+        const val NAME_URL = "url"
     }
 }

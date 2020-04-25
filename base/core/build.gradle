@@ -16,4 +16,5 @@ dependencies {
     api Libraries.retrofitCoroutineAdapter
 
     api Libraries.lifecycleExtensions
+    api Libraries.lifecycleViewModelKtx
 }
