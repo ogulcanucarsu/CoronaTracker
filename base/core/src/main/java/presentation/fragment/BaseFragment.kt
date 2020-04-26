@@ -53,7 +53,7 @@ abstract class BaseFragment<VM : ViewModel> : Fragment(), BaseUi {
 
     protected lateinit var viewModel: VM
 
-    private lateinit var navigationController: NavigationController
+    protected lateinit var navigationController: NavigationController
 
     @Inject
     lateinit var errorFactory: ErrorFactory

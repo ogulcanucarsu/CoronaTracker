@@ -8,7 +8,7 @@ import data.inject.scope.ActivityScope
 abstract class DashBoardActivityModule {
     @ActivityScope
     @ContributesAndroidInjector(
-        modules = [DashBoardFragmentModule::class]
+        modules = [DashBoardFragmentModule::class, DashBoardChooseFragmentModule::class]
     )
     abstract fun provideDashBoardActivity(): DashBoardActivity
 }
