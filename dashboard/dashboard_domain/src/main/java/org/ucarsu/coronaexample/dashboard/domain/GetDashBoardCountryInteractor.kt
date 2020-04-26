@@ -10,6 +10,6 @@ class GetDashBoardCountryInteractor @Inject constructor(
     private val dashBoardRepository: DashBoardRepository
 ) : BaseInteractor(), Interactor.DeferredRetrieveInteractor<List<CountriesData>> {
     override suspend fun execute(): Deferred<DataHolder<List<CountriesData>>> = handleAsync {
-        dashBoardRepository.getCountryData().await()
+        dashBoardRepository.getDashBoardCountryData().await()
     }
 }

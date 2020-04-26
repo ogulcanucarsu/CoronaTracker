@@ -15,11 +15,11 @@ class DashBoardRepositoryImpl @Inject constructor(
     private val dashBoardCountryRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<CountriesData>>,
     private val dashBoardContinentRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>>
 ) : BaseRepositoryImpl(), DashBoardRepository {
-    override suspend fun getCountryData(): Deferred<DataHolder<List<CountriesData>>> = handleAsync {
+    override suspend fun getDashBoardCountryData(): Deferred<DataHolder<List<CountriesData>>> = handleAsync {
         dashBoardCountryRemoteDataSource.fetch()
     }
 
-    override suspend fun getContinentData(): Deferred<DataHolder<List<ContinentData>>> =
+    override suspend fun getDashBoardContinentData(): Deferred<DataHolder<List<ContinentData>>> =
         handleAsync {
             dashBoardContinentRemoteDataSource.fetch()
         }

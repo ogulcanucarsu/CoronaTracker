@@ -18,21 +18,21 @@ class DashBoardDataModule {
         retrofit.create(DashBoardServices::class.java)
 
     @Provides
-    fun provideDashBoardCountryRemoteDataSource(
+    fun provideGetDashBoardCountryRemoteDataSource(
         dashBoardServices: DashBoardServices,
         errorFactory: ErrorFactory
     ): DataSource.RemoteDataSource.FetchDataSource<List<CountriesData>> =
-        DashBoardCountryRemoteDataSource(
+        GetDashBoardCountryRemoteDataSource(
             dashBoardServices,
             errorFactory
         )
 
     @Provides
-    fun provideDashBoardContinentRemoteDataSource(
+    fun provideGetDashBoardContinentRemoteDataSource(
         dashBoardServices: DashBoardServices,
         errorFactory: ErrorFactory
     ): DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>> =
-        DashBoardContinentRemoteDataSource(
+        GetDashBoardContinentRemoteDataSource(
             dashBoardServices,
             errorFactory
         )

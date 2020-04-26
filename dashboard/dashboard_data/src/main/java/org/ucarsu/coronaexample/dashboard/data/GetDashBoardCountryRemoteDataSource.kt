@@ -7,7 +7,7 @@ import data.modules.adapter.ApiCallAdapter
 import org.ucarsu.coronaexample.dashboard.domain.CountriesData
 import javax.inject.Inject
 
-class DashBoardCountryRemoteDataSource @Inject constructor(
+class GetDashBoardCountryRemoteDataSource @Inject constructor(
     private val dashBoardServices: DashBoardServices,
     private val errorFactory: ErrorFactory
 ) : DataSource.RemoteDataSource.FetchDataSource<List<CountriesData>> {

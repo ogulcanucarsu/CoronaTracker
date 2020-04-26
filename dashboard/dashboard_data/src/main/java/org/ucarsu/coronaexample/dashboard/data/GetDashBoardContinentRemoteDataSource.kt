@@ -8,7 +8,7 @@ import org.ucarsu.coronaexample.dashboard.domain.ContinentData
 import org.ucarsu.coronaexample.dashboard.domain.CountriesData
 import javax.inject.Inject
 
-class DashBoardContinentRemoteDataSource  @Inject constructor(
+class GetDashBoardContinentRemoteDataSource  @Inject constructor(
     private val dashBoardServices: DashBoardServices,
     private val errorFactory: ErrorFactory
 ) : DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>> {
