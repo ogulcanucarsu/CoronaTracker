@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import data.datasource.DataSource
 import data.error.ErrorFactory
+import org.ucarsu.coronaexample.dashboard.domain.ContinentData
 import org.ucarsu.coronaexample.dashboard.domain.CountriesData
 import org.ucarsu.coronaexample.dashboard.domain.DashBoardRepository
 import retrofit2.Retrofit
@@ -26,13 +27,25 @@ class DashBoardDataModule {
             errorFactory
         )
 
+    @Provides
+    fun provideDashBoardContinentRemoteDataSource(
+        dashBoardServices: DashBoardServices,
+        errorFactory: ErrorFactory
+    ): DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>> =
+        DashBoardContinentRemoteDataSource(
+            dashBoardServices,
+            errorFactory
+        )
+
     @Singleton
     @Provides
     fun provideDashBoardRepository(
         dashBoardCountryRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<CountriesData>>,
+        dashBoardContinentRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>>,
         errorFactory: ErrorFactory
     ): DashBoardRepository = DashBoardRepositoryImpl(
         errorFactory,
-        dashBoardCountryRemoteDataSource
+        dashBoardCountryRemoteDataSource,
+        dashBoardContinentRemoteDataSource
     )
 }

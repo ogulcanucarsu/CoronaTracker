@@ -7,10 +7,18 @@ import domain.Interactor
 @Module
 class DashBoardDomainModule {
     @Provides
-    fun provideGetDashBoardInteractor(
+    fun provideGetDashBoardCountryInteractor(
         dashBoardRepository: DashBoardRepository
     ): Interactor.DeferredRetrieveInteractor<List<CountriesData>> =
         GetDashBoardCountryInteractor(
+            dashBoardRepository
+        )
+
+    @Provides
+    fun provideGetDashBoardContinentInteractor(
+        dashBoardRepository: DashBoardRepository
+    ): Interactor.DeferredRetrieveInteractor<List<ContinentData>> =
+        GetDashBoardContinentInteractor(
             dashBoardRepository
         )
 }
