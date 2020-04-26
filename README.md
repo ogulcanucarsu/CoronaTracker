@@ -35,7 +35,12 @@
 >* Domain
 >* Presentation
 
-## Screenshots:
+## **Graphic Library**
+Used, this Github Library link: https://github.com/AnyChart/AnyChart-Android
+
+## Screenshots
 <img src="https://github.com/ogulcanucarsu/CoronaTracker/blob/master/art/ss1.jpg"
 height="384" width="210"> <img src="https://github.com/ogulcanucarsu/CoronaTracker/blob/master/art/ss2.jpg" height="384" width="210">
+
+Special thanks to https://github.com/savepopulation/modular-app-core
 
