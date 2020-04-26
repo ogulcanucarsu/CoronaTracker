@@ -9,7 +9,7 @@ class DashBoardDomainModule {
     @Provides
     fun provideGetDashBoardCountryInteractor(
         dashBoardRepository: DashBoardRepository
-    ): Interactor.DeferredRetrieveInteractor<List<CountriesData>> =
+    ): Interactor.DeferredRetrieveInteractor<List<CountriesDataResponse>> =
         GetDashBoardCountryInteractor(
             dashBoardRepository
         )
@@ -17,7 +17,7 @@ class DashBoardDomainModule {
     @Provides
     fun provideGetDashBoardContinentInteractor(
         dashBoardRepository: DashBoardRepository
-    ): Interactor.DeferredRetrieveInteractor<List<ContinentData>> =
+    ): Interactor.DeferredRetrieveInteractor<List<ContinentDataResponse>> =
         GetDashBoardContinentInteractor(
             dashBoardRepository
         )

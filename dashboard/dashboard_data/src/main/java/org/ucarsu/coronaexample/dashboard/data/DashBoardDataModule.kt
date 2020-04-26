@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import data.datasource.DataSource
 import data.error.ErrorFactory
-import org.ucarsu.coronaexample.dashboard.domain.ContinentData
-import org.ucarsu.coronaexample.dashboard.domain.CountriesData
+import org.ucarsu.coronaexample.dashboard.domain.ContinentDataResponse
+import org.ucarsu.coronaexample.dashboard.domain.CountriesDataResponse
 import org.ucarsu.coronaexample.dashboard.domain.DashBoardRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -21,7 +21,7 @@ class DashBoardDataModule {
     fun provideGetDashBoardCountryRemoteDataSource(
         dashBoardServices: DashBoardServices,
         errorFactory: ErrorFactory
-    ): DataSource.RemoteDataSource.FetchDataSource<List<CountriesData>> =
+    ): DataSource.RemoteDataSource.FetchDataSource<List<CountriesDataResponse>> =
         GetDashBoardCountryRemoteDataSource(
             dashBoardServices,
             errorFactory
@@ -31,7 +31,7 @@ class DashBoardDataModule {
     fun provideGetDashBoardContinentRemoteDataSource(
         dashBoardServices: DashBoardServices,
         errorFactory: ErrorFactory
-    ): DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>> =
+    ): DataSource.RemoteDataSource.FetchDataSource<List<ContinentDataResponse>> =
         GetDashBoardContinentRemoteDataSource(
             dashBoardServices,
             errorFactory
@@ -40,8 +40,8 @@ class DashBoardDataModule {
     @Singleton
     @Provides
     fun provideDashBoardRepository(
-        dashBoardCountryRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<CountriesData>>,
-        dashBoardContinentRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<ContinentData>>,
+        dashBoardCountryRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<CountriesDataResponse>>,
+        dashBoardContinentRemoteDataSource: DataSource.RemoteDataSource.FetchDataSource<List<ContinentDataResponse>>,
         errorFactory: ErrorFactory
     ): DashBoardRepository = DashBoardRepositoryImpl(
         errorFactory,

@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class GetDashBoardCountryInteractor @Inject constructor(
     private val dashBoardRepository: DashBoardRepository
-) : BaseInteractor(), Interactor.DeferredRetrieveInteractor<List<CountriesData>> {
-    override suspend fun execute(): Deferred<DataHolder<List<CountriesData>>> = handleAsync {
+) : BaseInteractor(), Interactor.DeferredRetrieveInteractor<List<CountriesDataResponse>> {
+    override suspend fun execute(): Deferred<DataHolder<List<CountriesDataResponse>>> = handleAsync {
         dashBoardRepository.getDashBoardCountryData().await()
     }
 }
