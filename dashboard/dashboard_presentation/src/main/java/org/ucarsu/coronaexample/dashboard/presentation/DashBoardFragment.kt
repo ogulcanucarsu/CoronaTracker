@@ -133,8 +133,8 @@ class DashBoardFragment : BaseFragment<DashBoardViewModel>() {
             data.add(
                 CustomDataEntryClass(
                     continents.continent,
-                    continents.totalCases?.replace(",", "")?.toInt(),
-                    continents.activeCases.replace(",", "").toInt()
+                    continents.totalCases?.replace(".","")?.replace(",", "")?.toInt(),
+                    continents.activeCases.replace(".","").replace(",", "").toInt()
                 )
             )
         }
