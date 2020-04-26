@@ -40,6 +40,7 @@ class DashBoardViewModel @Inject constructor(
     })
 
     fun getDashBoardContinent() = handleLaunch(execution = {
+        _getDashBoardContinentLiveData.value = DataHolder.Loading()
         when (val result = getDashBoardContinentInteractor.execute().await()) {
             is DataHolder.Success -> {
                 _getDashBoardContinentLiveData.value = DataHolder.Success(result.data)
