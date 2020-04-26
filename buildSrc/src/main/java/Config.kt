@@ -28,7 +28,6 @@ object Dimensions {
 }
 
 object Dev {
-    val rootUrl = "\"https://testdigitalapi.vakifbank.com.tr/\""
     val suffix = ".dev"
     val versionNameSuffix = suffix
     val applicationIdSuffix = suffix
