@@ -4,7 +4,6 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import navigation.feature.DashBoard
-import org.ucarsu.coronaexample.core.R
 import presentation.extension.transact
 import java.lang.ref.WeakReference
 

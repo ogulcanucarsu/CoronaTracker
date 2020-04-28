@@ -3,7 +3,6 @@ package navigation.navigations
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import kotlinx.android.synthetic.main.activity_base.view.*
 import org.ucarsu.coronaexample.core.R
 import java.lang.ref.WeakReference
 
